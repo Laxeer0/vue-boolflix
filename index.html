@@ -34,14 +34,31 @@
         </header>
         <main>
             <div class="container">
-                <div class="film-container">
-                    <div v-for="movie in movies" class="film-item col-3">
-                        <img :src="baseURL+movie.poster_path">
-                        <div class="film-item-cover">
-                            <h2>{{movie.title}}</h2>
-                            <h6>{{movie.original_title}}</h6>
-                            <p>Language: {{movie.original_language}}</p>
-                            <p>Vote: {{movie.vote_average}}</p>
+                <div v-for="genre in moviesgenre" :class="searchForm ? 'd-none' :  'd-block'">
+                    <h2>{{genre.genrename}}</h2>
+                    <div class="film-container-genre">
+                        <div v-for="movie in genre.movies" class="film-item col-2">
+                            <img :src="baseURL+movie.poster_path">
+                            <div class="film-item-cover">
+                                <h2>{{movie.title}}</h2>
+                                <h6>{{movie.original_title}}</h6>
+                                <p>Language: {{movie.original_language}}</p>
+                                <p>Vote: {{movie.vote_average}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div :class="searchForm ? 'd-block' :  'd-none'">
+                    <h4>Ricerca di: {{searchMovieInput}}</h4>
+                    <div class="film-container">
+                        <div v-for="movie in movies" class="film-item col-3">
+                            <img :src="baseURL+movie.poster_path">
+                            <div class="film-item-cover">
+                                <h2>{{movie.title}}</h2>
+                                <h6>{{movie.original_title}}</h6>
+                                <p>Language: {{movie.original_language}}</p>
+                                <p>Vote: {{movie.vote_average}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
