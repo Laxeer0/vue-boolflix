@@ -42,10 +42,12 @@ h1 {
     box-shadow: inset -4px 2px 30px #171717;
 }
 
+header {
+    background-color: #1c1c1c;
+}
+
 .header {
     height: 70px;
-    background-color: #1c1c1c;
-    padding: 0px 10px;
 }
 
 .search-film {

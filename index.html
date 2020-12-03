@@ -25,14 +25,15 @@
 <body>
     <div id="root">
         <header>
-            <div class="header d-flex justify-content-between align-items-center">
-                <div class="header-left">
-                    <h1>Boolfix</h1>
+            <div class="container">
+                <div class="header d-flex justify-content-between align-items-center">
+                    <div class="header-left">
+                        <h1>Boolfix</h1>
+                    </div>
+                    <div class="header-right">
+                        <input type="text" class="form-control search-film" placeholder="Ricerca il film" v-model="searchMovieInput" v-on:keyup.enter="searchMovie">
+                    </div>
                 </div>
-                <div class="header-right">
-                    <input type="text" class="form-control search-film" placeholder="Ricerca il film" v-model="searchMovieInput" v-on:keyup.enter="searchMovie">
-                </div>
-            </div>
         </header>
         <main>
 
@@ -103,8 +104,8 @@
                 </div>
             </div>
         </main>
-    </div>
-    <script src="js/main.js "></script>
+        </div>
+        <script src="js/main.js "></script>
 </body>
 
 </html>
