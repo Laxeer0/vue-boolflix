@@ -12,31 +12,36 @@ var root = new Vue({
         release_date_movies: [],
         moviesgenre: [],
         arr: [],
-        searchForm : 0,
-
+        searchForm: 0,
+        singleItem: 0,
+        listMovies: 1,
+        currentMovie: [{
+            title: '',
+        }],
 
     },
     mounted() {
         this.genrelist()
     },
+    computed: {},
     methods: {
-        genrelist: function () {
+        genrelist: function() {
             axios.get('https://api.themoviedb.org/3/genre/movie/list', {
-                params: {
-                    api_key: this.api_key,
-                }
-            })
+                    params: {
+                        api_key: this.api_key,
+                    }
+                })
                 .then((genreResponse) => {
 
                     root.genres = genreResponse.data.genres;
                     root.genres.forEach(element => {
 
                         axios.get('https://api.themoviedb.org/3/discover/movie', {
-                            params: {
-                                api_key: this.api_key,
-                                with_genres: element.id
-                            }
-                        })
+                                params: {
+                                    api_key: this.api_key,
+                                    with_genres: element.id
+                                }
+                            })
                             .then((movieResponse) => {
                                 root.moviesgenre.push({
                                     genrename: element.name,
@@ -46,25 +51,63 @@ var root = new Vue({
                             })
                     });
 
+
+
                 })
         },
-        searchMovie: function () {
-            if(this.searchMovieInput){
-            this.searchForm = 1;
-            axios.get('https://api.themoviedb.org/3/search/movie', {
-                params: {
-                    api_key: root.api_key,
-                    query: root.searchMovieInput
-                }
-            })
-                .then((movieResponse) => {
-                    root.movies = movieResponse.data.results;0
-                    
+        voteStar: function(vote) {
 
-                })}else{
-                    this.searchForm = 0;
-                }
+            var fullStar = "<i class=\"fas fa-star\"></i>";
+            var emptyStar = "<i class=\"far fa-star\"></i>";
+            var newVote = Math.round(vote / 2);
+            var starsVote = "";
+            for (var i = 0; i < newVote; i++) {
+                starsVote += fullStar;
+            }
+            for (var i = 0; i < (5 - newVote); i++) {
+                starsVote += emptyStar;
+            }
+            return starsVote;
+
         },
+        searchMovie: function() {
+            if (this.searchMovieInput) {
+                this.searchForm = 1;
+                this.singleItem = 0;
+                this.listMovies = 0;
+                axios.get('https://api.themoviedb.org/3/search/movie', {
+                        params: {
+                            api_key: root.api_key,
+                            query: root.searchMovieInput
+                        }
+                    })
+                    .then((movieResponse) => {
+                        root.movies = movieResponse.data.results;
+                        0
+
+
+                    })
+            } else {
+                this.searchForm = 0;
+                this.singleItem = 0;
+                this.listMovies = 1;
+            }
+        },
+        selectMovie: function(movie) {
+
+            this.currentMovie = movie;
+            this.searchForm = 0;
+            this.singleItem = 1;
+            this.listMovies = 0;
+        },
+        selectGenre: function() {
+            console.log("movie");
+        },
+        resetPage: function() {
+            this.searchForm = 0;
+            this.singleItem = 0;
+            this.listMovies = 1;
+        }
     }
 
 });

@@ -7,14 +7,17 @@
     <title>Boolfix - Home</title>
 
     <!--CDN BOOTSTRAP-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <!--CDN VUEJS-->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
+    <!--CDN FONTAWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+
     <!--CDN AXIOS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"></script>
+    <!--CDN FONTAWESOME-->
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -27,33 +30,69 @@
                     <h1>Boolfix</h1>
                 </div>
                 <div class="header-right">
-                    <input type="text" class="form-control search-film" placeholder="Ricerca il film"
-                        v-model="searchMovieInput" v-on:keyup.enter="searchMovie">
+                    <input type="text" class="form-control search-film" placeholder="Ricerca il film" v-model="searchMovieInput" v-on:keyup.enter="searchMovie">
                 </div>
             </div>
         </header>
         <main>
-            <div class="container">
-                <div v-for="genre in moviesgenre" :class="searchForm ? 'd-none' :  'd-block'">
-                    <h2>{{genre.genrename}}</h2>
-                    <div class="film-container-genre">
-                        <div v-for="movie in genre.movies" class="film-item col-2">
-                            <img :src="baseURL+movie.poster_path">
-                            <div class="film-item-cover">
-                                <h2>{{movie.title}}</h2>
-                                <h6>{{movie.original_title}}</h6>
-                                <p>Language: {{movie.original_language}}</p>
-                                <p>Vote: {{movie.vote_average}}</p>
+
+            <div v-if="singleItem">
+                <div class="container">
+                    <div class="card">
+                        <div class="container-fliud">
+
+                            <button class="backpage" @click="resetPage"><i class="fas fa-arrow-circle-left fa-3x"></i></button>
+                            <div class="wrapper row">
+                                <div class="preview col-md-6">
+                                    <div class="preview-pic tab-content">
+                                        <img :src="baseURL+currentMovie.poster_path" />
+                                    </div>
+                                </div>
+                                <div class="details col-md-6">
+                                    <h3 class="product-title">{{currentMovie.title}}</h3>
+                                    <p class="language">Language: {{currentMovie.original_language}}</p>
+                                    <div class="rating">
+                                        <div class="stars"><span v-html="voteStar(currentMovie.vote_average)"></span>
+                                        </div>
+                                        <span class="review-no">{{currentMovie.vote_count}} votes</span>
+                                    </div>
+                                    <p class="description">{{currentMovie.overview}}</p>
+                                    <h6 class="release_date">{{currentMovie.release_date}}</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div :class="searchForm ? 'd-block' :  'd-none'">
-                    <h4>Ricerca di: {{searchMovieInput}}</h4>
-                    <div class="film-container">
-                        <div v-for="movie in movies" class="film-item col-3">
-                            <img :src="baseURL+movie.poster_path">
-                            <div class="film-item-cover">
+            </div>
+            <div class="container ">
+                <div v-if="listMovies " v-for="genre in moviesgenre " class="mt-5 ">
+                    <h2>{{genre.genrename}}</h2>
+                    <div class="film-container-genre ">
+                        <div v-for="movie in genre.movies " @click="selectMovie(movie)" class="film-item col-2 ">
+                            <img :src="baseURL+movie.poster_path ">
+                            <div class="film-item-cover ">
+                                <h2>{{movie.title}}</h2>
+                                <h6>{{movie.original_title}}</h6>
+                                <p>Language: {{movie.original_language}}</p>
+                                <p>Vote: <span v-html="voteStar(movie.vote_average) "></span></p>
+                            </div>
+                        </div>
+
+                        <div @click="selectGenre " class="film-item more col-2 ">
+                            <h2>Mostra tutto</h2>
+                            <h2><i class="fa fa-plus-circle "></i></h2>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="searchForm ">
+                    <div class="header-search">
+                        <button class="backpage" @click="resetPage"><i class="fas fa-arrow-circle-left fa-3x"></i></button>
+                        <h4>Ricerca di: {{searchMovieInput}}</h4>
+                    </div>
+                    <div class="film-container ">
+                        <div v-for="movie in movies " @click="selectMovie(movie)" class="film-item col-3 ">
+                            <img :src="baseURL+movie.poster_path ">
+                            <div class="film-item-cover ">
                                 <h2>{{movie.title}}</h2>
                                 <h6>{{movie.original_title}}</h6>
                                 <p>Language: {{movie.original_language}}</p>
@@ -65,7 +104,7 @@
             </div>
         </main>
     </div>
-    <script src="js/main.js"></script>
+    <script src="js/main.js "></script>
 </body>
 
 </html>
