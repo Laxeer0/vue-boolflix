@@ -26,16 +26,33 @@
     <div id="root">
         <header>
             <div class="header container d-flex justify-content-between align-items-center">
-                <div class="header-left">
-                    <h1>Boolfix</h1>
+                <div class="nav-left">
+                    <h1>Boolflix</h1>
                 </div>
-                <div class="header-right">
+                <div class="nav-center">
+                    <ul>
+                        <li>Serie Tv</li>
+                        <li>Film</li>
+                    </ul>
+                </div>
+                <div class="nav-right">
                     <input type="text" class="form-control search-film" placeholder="Ricerca il film" v-model="searchMovieInput" v-on:keyup.enter="searchMovie">
                 </div>
             </div>
         </header>
         <main>
-
+            <div v-if="selectFilmTv">
+                <div class="container">
+                    <div class="card">
+                        <div class="container mt-0">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button class="btn btn-outline-danger btn-lg mr-5" @click="selectGenreMovie('movie')">Film</button>
+                                <button class="btn btn-outline-danger btn-lg" @click="selectGenreMovie('tv')">Serie TV</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div v-if="singleItem">
                 <div class="container">
                     <div class="card">
@@ -48,7 +65,8 @@
                                     </div>
                                 </div>
                                 <div class="details col-md-6">
-                                    <h3 class="product-title">{{currentMovie.title}}</h3>
+                                    <h3 v-if="filmTv == 'movie'" class="product-title">{{currentMovie.title}}</h3>
+                                    <h3 v-if="filmTv == 'tv'" class="product-title">{{currentMovie.name}}</h3>
                                     <p class="language">Language: {{currentMovie.original_language}}</p>
                                     <div class="rating">
                                         <div class="stars"><span v-html="voteStar(currentMovie.vote_average)"></span>
@@ -70,7 +88,8 @@
                         <div v-for="movie in genre.movies " @click="selectMovie(movie)" class="film-item col-2 ">
                             <img :src="baseURL+movie.poster_path ">
                             <div class="film-item-cover ">
-                                <h2>{{movie.title}}</h2>
+                                <h3 v-if="filmTv == 'movie'">{{movie.title}}</h3>
+                                <h3 v-if="filmTv == 'tv'">{{movie.name}}</h3>
                                 <h6>{{movie.original_title}}</h6>
                                 <p>Language: {{movie.original_language}}</p>
                                 <p>Vote: <span v-html="voteStar(movie.vote_average) "></span></p>
@@ -92,7 +111,8 @@
                         <div v-for="movie in movies " @click="selectMovie(movie)" class="film-item col-3 ">
                             <img :src="baseURL+movie.poster_path ">
                             <div class="film-item-cover ">
-                                <h2>{{movie.title}}</h2>
+                                <h3 v-if="filmTv == 'movie'">{{movie.title}}</h3>
+                                <h3 v-if="filmTv == 'tv'">{{movie.name}}</h3>
                                 <h6>{{movie.original_title}}</h6>
                                 <p>Language: {{movie.original_language}}</p>
                                 <p>Vote: {{movie.vote_average}}</p>

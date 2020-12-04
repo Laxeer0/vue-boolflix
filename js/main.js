@@ -1,3 +1,5 @@
+Vue.config.devtools = true;
+
 var root = new Vue({
     el: '#root',
     data: {
@@ -11,21 +13,24 @@ var root = new Vue({
         arr: [],
         searchForm: 0,
         singleItem: 0,
-        listMovies: 1,
+        listMovies: 0,
+        selectFilmTv: 1,
+        filmTv: '',
         currentMovie: [{
             title: '',
         }],
 
     },
     mounted() {
-        this.genrelist()
+
     },
     computed: {},
     methods: {
         genrelist: function() {
-            axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+            axios.get('https://api.themoviedb.org/3/genre/' + this.filmTv + '/list', {
                     params: {
                         api_key: this.api_key,
+                        language: 'it',
                     }
                 })
                 .then((genreResponse) => {
@@ -33,20 +38,22 @@ var root = new Vue({
                     root.genres = genreResponse.data.genres;
                     root.genres.forEach(element => {
 
-                        axios.get('https://api.themoviedb.org/3/discover/movie', {
+                        axios.get('https://api.themoviedb.org/3/discover/' + this.filmTv, {
                                 params: {
                                     api_key: this.api_key,
-                                    with_genres: element.id
+                                    with_genres: element.id,
+                                    language: 'it',
+                                    region: 'it',
                                 }
                             })
                             .then((movieResponse) => {
                                 root.moviesgenre.push({
                                     genrename: element.name,
                                     genreID: element.id,
-                                    movies: movieResponse.data.results
+                                    movies: movieResponse.data.results,
                                 });
                             })
-                    });
+                    })
 
 
 
@@ -72,10 +79,11 @@ var root = new Vue({
                 this.searchForm = 1;
                 this.singleItem = 0;
                 this.listMovies = 0;
-                axios.get('https://api.themoviedb.org/3/search/movie', {
+                axios.get('https://api.themoviedb.org/3/search/' + this.filmTv, {
                         params: {
                             api_key: root.api_key,
-                            query: root.searchMovieInput
+                            query: root.searchMovieInput,
+                            language: 'it'
                         }
                     })
                     .then((movieResponse) => {
@@ -101,6 +109,14 @@ var root = new Vue({
             console.log("movie");
         },
         resetPage: function() {
+            this.searchForm = 0;
+            this.singleItem = 0;
+            this.listMovies = 1;
+        },
+        selectGenreMovie: function(select) {
+            this.filmTv = select;
+            this.genrelist();
+            this.selectFilmTv = 0;
             this.searchForm = 0;
             this.singleItem = 0;
             this.listMovies = 1;

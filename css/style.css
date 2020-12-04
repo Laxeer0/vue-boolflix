@@ -5,6 +5,7 @@ body {
     background-color: #212121;
     scrollbar-color: #7a0000 #171717;
     scrollbar-width: thin;
+    box-sizing: border-box
 }
 
 h1,
@@ -48,19 +49,39 @@ header {
     height: 70px;
 }
 
-.header-left {
+.nav-left {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.header-left h1 {
+.nav-left h1 {
     margin: auto;
     padding: 0;
 }
 
 .header {
     margin-top: 0 !important;
+}
+
+.nav-center {
+    display: flex;
+}
+
+.nav-center>ul>li {
+    display: inline-block;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-center>ul>li:first-child {
+    margin-right: 40px;
+}
+
+.nav-center>ul>li:hover {
+    border-bottom: 3px solid #9c0000;
+    border-radius: 10%;
 }
 
 .search-film {
@@ -232,3 +253,5 @@ main {
     display: inline-block;
     vertical-align: middle;
 }
+
+.header-
