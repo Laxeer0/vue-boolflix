@@ -31,8 +31,8 @@
                 </div>
                 <div class="nav-center">
                     <ul>
-                        <li>Serie Tv</li>
-                        <li>Film</li>
+                        <li @click="selectGenreMovie('movie')">Serie Tv</li>
+                        <li @click="selectGenreMovie('tv')">Film</li>
                     </ul>
                 </div>
                 <div class="nav-right">
@@ -96,9 +96,9 @@
                             </div>
                         </div>
 
-                        <div @click="selectGenre " class="film-item more col-2 ">
+                        <div @click="selectGenre(genre.genreID,genre.genrename) " class="film-item more col-2 ">
                             <h2>Mostra tutto</h2>
-                            <h2><i class="fa fa-plus-circle "></i></h2>
+                            <h2><i class="fa fa-plus-circle"></i></h2>
                         </div>
                     </div>
                 </div>
